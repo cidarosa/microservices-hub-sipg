@@ -41,6 +41,5 @@ public class PagamentoController {
                 .toUri();
 
         return ResponseEntity.created(uri).body(dto);
-
     }
 }
