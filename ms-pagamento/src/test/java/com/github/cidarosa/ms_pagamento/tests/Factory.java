@@ -1,5 +1,6 @@
 package com.github.cidarosa.ms_pagamento.tests;
 
+import com.github.cidarosa.ms_pagamento.dto.PagamentoDTO;
 import com.github.cidarosa.ms_pagamento.entity.Pagamento;
 import com.github.cidarosa.ms_pagamento.entity.Status;
 
@@ -13,5 +14,12 @@ public class Factory {
                 "07/32", "585", Status.CRIADO, 1L, 2L);
 
         return  pagamento;
+    }
+
+    public static PagamentoDTO createPagamentoDTO(){
+
+        Pagamento pagamento = createPagamento();
+        return new PagamentoDTO(pagamento);
+
     }
 }
