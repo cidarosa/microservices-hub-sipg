@@ -6,6 +6,7 @@ import com.github.cidarosa.ms_pagamento.service.PagamentoService;
 import com.github.cidarosa.ms_pagamento.service.exceptions.ResourceNotFoundException;
 import com.github.cidarosa.ms_pagamento.tests.Factory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,13 @@ public class PagamentoControllerTest {
         // id não existe
         Mockito.when(service.updatePagamento(eq(nonExistingId), any()))
                 .thenThrow(ResourceNotFoundException.class);
+
+        // simulando o comportamento do service - deletePagamento
+        // id existe
+        Mockito.doNothing().when(service).deletePagamento(existingId);
+        // id não existe
+        Mockito.doThrow(ResourceNotFoundException.class).when(service)
+                .deletePagamento(nonExistingId);
 
     }
 
@@ -151,16 +159,36 @@ public class PagamentoControllerTest {
     }
 
     @Test
-    public void updatePagamentoShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() throws Exception{
+    public void updatePagamentoShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() throws Exception {
 
         String jsonRequestBody = objectMapper.writeValueAsString(dto);
 
         mockMvc.perform(put("/pagamentos/{id}", nonExistingId)
-                .content(jsonRequestBody)
-                .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("deletePagamento deverá não fazer nada quando ID existe")
+    public void deletePagamentoShouldDoNothingWhenIdExists() throws Exception {
+
+        mockMvc.perform(delete("/pagamentos/{id}", existingId)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void deletePagamentoShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() throws Exception {
+
+        mockMvc.perform(delete("/pagamentos/{id}", nonExistingId)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
+
 
 }
