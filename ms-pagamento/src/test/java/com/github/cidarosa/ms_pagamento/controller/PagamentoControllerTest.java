@@ -88,7 +88,7 @@ public class PagamentoControllerTest {
     }
 
     @Test
-    public void getByIdShouldTrhowResourceNotFoundExceptionWhenIdDoesNotExist() throws Exception {
+    public void getByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() throws Exception {
 
         ResultActions result = mockMvc.perform(get("/pagamentos/{id}", nonExistingId)
                 .accept(MediaType.APPLICATION_JSON));
@@ -117,9 +117,6 @@ public class PagamentoControllerTest {
                 .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.pedidoId").exists())
                 .andExpect(jsonPath("$.formaDePagamentoId").exists());
-
-
-
     }
 
 }
