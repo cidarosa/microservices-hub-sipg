@@ -136,9 +136,9 @@ public class PagamentoControllerIT {
 
         String jsonRequestBody = objectMapper.writeValueAsString(pagamentoDTO);
         mockMvc.perform(put("/pagamentos/{id}", existingId)
-                .content(jsonRequestBody)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(jsonRequestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -150,7 +150,7 @@ public class PagamentoControllerIT {
     }
 
     @Test
-    public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception{
+    public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
 
         String jsonRequestBody = objectMapper.writeValueAsString(pagamentoDTO);
         mockMvc.perform(put("/pagamentos/{id}", nonExistingId)
@@ -162,7 +162,7 @@ public class PagamentoControllerIT {
     }
 
     @Test
-    public void updateShouldThrowsExceptionWhenInvalidData() throws Exception{
+    public void updateShouldThrowsExceptionWhenInvalidData() throws Exception {
 
         pagamentoDTO = Factory.createNewPagamentoDTOWithInvalidData();
         String jsonRequestBody = objectMapper.writeValueAsString(pagamentoDTO);
@@ -173,6 +173,15 @@ public class PagamentoControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void deleteShouldReturnNoContentWhenIdExists() throws Exception {
+
+        mockMvc.perform(delete("/pagamentos/{id}", existingId)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
 
