@@ -149,6 +149,32 @@ public class PagamentoControllerIT {
                 .andExpect(status().is2xxSuccessful());
     }
 
+    @Test
+    public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception{
+
+        String jsonRequestBody = objectMapper.writeValueAsString(pagamentoDTO);
+        mockMvc.perform(put("/pagamentos/{id}", nonExistingId)
+                        .content(jsonRequestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void updateShouldThrowsExceptionWhenInvalidData() throws Exception{
+
+        pagamentoDTO = Factory.createNewPagamentoDTOWithInvalidData();
+        String jsonRequestBody = objectMapper.writeValueAsString(pagamentoDTO);
+
+        mockMvc.perform(put("/pagamentos/{id}", existingId)
+                        .content(jsonRequestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
 
 }
 
