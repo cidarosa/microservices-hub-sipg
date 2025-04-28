@@ -1,12 +1,11 @@
 package com.github.cidarosa.ms_pedido.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,11 +16,22 @@ import java.time.LocalDate;
 @Table(name = "tb_pedido")
 public class Pedido {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
+//    @Column(unique = true)
+    @Column(nullable = false, length = 11)
     private String cpf;
     private LocalDate data;
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    //relacionamento
+    @OneToMany(mappedBy = "pedido",
+            cascade = CascadeType.PERSIST)
+    private List<ItemDoPedido> itens = new ArrayList<>();
 
 }
