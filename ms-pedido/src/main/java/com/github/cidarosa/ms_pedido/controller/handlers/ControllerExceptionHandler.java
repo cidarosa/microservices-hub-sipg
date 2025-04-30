@@ -3,7 +3,7 @@ package com.github.cidarosa.ms_pedido.controller.handlers;
 
 import com.github.cidarosa.ms_pedido.controller.handlers.dto.CustomErrorDTO;
 import com.github.cidarosa.ms_pedido.controller.handlers.dto.ValidationErrorDTO;
-import com.github.cidarosa.ms_pedido.service.ResourceNotFoundException;
+import com.github.cidarosa.ms_pedido.service.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.github.cidarosa.ms_pedido.service;
+package com.github.cidarosa.ms_pedido.service.exception;
 
 public class ResourceNotFoundException extends  RuntimeException{
 
