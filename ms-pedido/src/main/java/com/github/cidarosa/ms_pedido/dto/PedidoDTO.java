@@ -39,6 +39,7 @@ public class PedidoDTO {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @NotEmpty(message = "Pedido deve ter pelo menos um item de pedido")
     private List<@Valid ItemDoPedidoDTO> itens = new ArrayList<>();
 
     public PedidoDTO(Pedido entity) {
