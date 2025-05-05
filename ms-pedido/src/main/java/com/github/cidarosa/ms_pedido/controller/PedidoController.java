@@ -53,5 +53,12 @@ public class PedidoController {
         return ResponseEntity.ok(dto);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePedidoById(@PathVariable Long id){
+
+        service.deletePedido(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
