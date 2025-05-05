@@ -19,21 +19,21 @@ public class PedidoController {
     private PedidoService service;
 
     @GetMapping
-    public ResponseEntity<List<PedidoDTO>> getAllPedidos(){
+    public ResponseEntity<List<PedidoDTO>> getAllPedidos() {
 
         List<PedidoDTO> list = service.findAllPedidos();
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoDTO> getById(@PathVariable Long id){
+    public ResponseEntity<PedidoDTO> getById(@PathVariable Long id) {
 
         PedidoDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<PedidoDTO> createPedido(@RequestBody @Valid PedidoDTO dto){
+    public ResponseEntity<PedidoDTO> createPedido(@RequestBody @Valid PedidoDTO dto) {
 
         dto = service.savePedido(dto);
 
@@ -43,11 +43,15 @@ public class PedidoController {
                 .buildAndExpand(dto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(dto);
-
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PedidoDTO> updatePedido(@PathVariable Long id,
+                                                  @Valid @RequestBody PedidoDTO dto) {
 
-
+        dto = service.updatePedido(id, dto);
+        return ResponseEntity.ok(dto);
+    }
 
 
 }

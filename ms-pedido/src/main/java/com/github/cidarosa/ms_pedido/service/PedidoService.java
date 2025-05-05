@@ -61,10 +61,11 @@ public class PedidoService {
     public PedidoDTO updatePedido(Long id, PedidoDTO dto) {
 
         try {
+            itemDoPedidoRepository.deleteByPedidoId(id);
             Pedido entity = repository.getReferenceById(id);
             entity.setData(LocalDate.now());
             entity.setStatus(Status.REALIZADO);
-            itemDoPedidoRepository.deleteByPedidoId(id);
+
             copyDtoToEntity(dto, entity);
             entity = repository.save(entity);
             itemDoPedidoRepository.saveAll(entity.getItens());
