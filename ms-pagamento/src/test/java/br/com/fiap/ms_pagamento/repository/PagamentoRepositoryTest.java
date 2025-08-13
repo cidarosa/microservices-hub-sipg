@@ -26,7 +26,7 @@ public class PagamentoRepositoryTest {
         existingId = 1L;
         nonExistingId = 100L;
         //verificar quantos registros tem no seed do DB
-        countTotalPagamento = 3L;
+        countTotalPagamento = 2L;
     }
 
     @Test
