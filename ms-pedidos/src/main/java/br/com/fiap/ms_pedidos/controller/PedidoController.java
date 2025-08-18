@@ -3,20 +3,15 @@ package br.com.fiap.ms_pedidos.controller;
 import br.com.fiap.ms_pedidos.dto.PedidoDTO;
 import br.com.fiap.ms_pedidos.dto.StatusDTO;
 import br.com.fiap.ms_pedidos.entities.Pedido;
+import br.com.fiap.ms_pedidos.kafka.PedidoProducer;
 import br.com.fiap.ms_pedidos.service.PedidoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -28,6 +23,9 @@ public class PedidoController {
 
     @Autowired
     private PedidoService service;
+
+    @Autowired
+    private PedidoProducer pedidoProducer;
 
     @GetMapping
     public ResponseEntity<List<PedidoDTO>> findAllPedidos() {
@@ -64,6 +62,13 @@ public class PedidoController {
                 .toUri();
 
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PostMapping("/enviar")
+    public ResponseEntity<String> enviarMensagem(@RequestParam String mensagem){
+
+        pedidoProducer.enviarMensagem(mensagem);
+        return ResponseEntity.ok("Mensagem enviada para o Kafka: " + mensagem);
     }
 
     @PutMapping("/{id}")
